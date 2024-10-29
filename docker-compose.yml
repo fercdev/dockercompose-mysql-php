@@ -1,0 +1,24 @@
+version: "3"
+services:
+  db:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: strongpassword
+      MYSQL_DATABASE: demo
+    volumes:
+      - db-data:/var/lib/mysql
+  phpweb:
+    image: php:8.0-apache
+    volumes:
+      - .:/var/www/html
+    ports:
+      - 8080:80
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - db
+    restart: always
+
+volumes:
+  db-data:
